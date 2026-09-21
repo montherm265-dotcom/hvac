@@ -1,5 +1,5 @@
 {
-  "name": "hvac",
+  "name": "qrforge",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,10 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.116.0",
-    "jspdf": "^4.2.1",
-    "jspdf-autotable": "^5.0.8",
+    "jsbarcode": "^3.12.3",
     "lucide-react": "^1.47.0",
+    "qrcode": "^1.5.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.4"
