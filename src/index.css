@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 200 25% 97%;
+    --foreground: 205 30% 12%;
+    --card: 0 0% 100%;
+    --border: 205 16% 88%;
+    --muted: 200 20% 94%;
+    --muted-foreground: 205 12% 45%;
+    /* Cooling teal — hsl(190 62% 26%) on white text ~6.8:1 AA+ */
+    --primary: 190 62% 26%;
+    --primary-foreground: 0 0% 100%;
+    /* Heating amber-orange — hsl(21 85% 46%) on white text ~4.6:1, clears AA */
+    --accent: 21 85% 46%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 45%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .card-soft {
+    @apply rounded-2xl border border-border bg-card shadow-soft;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-muted disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground;
+  }
+  .input-soft {
+    @apply w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15;
+  }
+  .section-pad {
+    @apply px-4 py-16 sm:px-6 lg:px-8;
+  }
+}
