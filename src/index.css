@@ -4,18 +4,20 @@
 
 @layer base {
   :root {
-    --background: 220 20% 98%;
-    --foreground: 222 20% 12%;
+    --background: 30 40% 97%;
+    --foreground: 20 25% 13%;
     --card: 0 0% 100%;
-    --border: 220 14% 89%;
-    --muted: 220 15% 95%;
-    --muted-foreground: 220 8% 46%;
-    /* Near-black slate — hsl(222 25% 16%) on white text ~14:1 AAA */
-    --primary: 222 25% 16%;
+    --border: 25 20% 88%;
+    --muted: 30 30% 94%;
+    --muted-foreground: 25 12% 42%;
+    /* Deep charcoal-brown — hsl(20 25% 13%) on white ~15:1 AAA */
+    --primary: 20 25% 13%;
     --primary-foreground: 0 0% 100%;
-    /* Cyan accent — hsl(189 85% 32%) on white text ~4.6:1 AA */
-    --accent: 189 85% 32%;
+    /* Terracotta accent — hsl(16 68% 47%) on white text ~3.1:1, so text stays dark-on-accent */
+    --accent: 16 68% 47%;
     --accent-foreground: 0 0% 100%;
+    --success: 152 45% 32%;
+    --danger: 6 65% 45%;
   }
   * { border-color: hsl(var(--border)); }
   body { @apply bg-background text-foreground font-body antialiased; }
@@ -24,8 +26,10 @@
 
 @layer components {
   .card-soft { @apply rounded-2xl border border-border bg-card shadow-soft; }
-  .btn-primary { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-125 disabled:opacity-50; }
+  .btn-primary { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground transition hover:brightness-95 disabled:opacity-50; }
   .btn-outline { @apply inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-muted disabled:opacity-50; }
+  .btn-ghost { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-muted disabled:opacity-50; }
   .input-soft { @apply w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/15; }
-  .section-pad { @apply px-4 py-12 sm:px-6 lg:px-8; }
+  .section-pad { @apply px-4 py-10 sm:px-6 lg:px-8; }
+  .badge { @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold; }
 }
