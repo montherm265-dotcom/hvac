@@ -11,11 +11,20 @@ const LABELS = {
   new_message: () => 'New message',
   milestone_completed: (p) => `Milestone completed: ${p.title}`,
   need_matched: () => 'A mission matches your skills',
+  request_matched: () => 'Someone might need exactly you — check Ask Human',
+  match_accepted: () => 'A match responded',
+  introduction_made: () => 'Someone accepted your request — say hello',
+  live_mission_started: () => 'A Mission you\'re part of just went live',
+  live_join_requested: () => 'Someone wants to help on your live Mission',
+  relationship_formed: () => 'You made a new connection',
+  peer_skill_verified: (p) => `Someone verified your "${p.skill}" skill`,
 };
 
 function linkFor(n) {
   if (n.payload?.mission_id) return `/missions/${n.payload.mission_id}`;
+  if (n.payload?.request_id) return `/requests/${n.payload.request_id}`;
   if (n.payload?.conversation_id) return `/messages/${n.payload.conversation_id}`;
+  if (n.payload?.with_user_id) return '/chains';
   return '#';
 }
 

@@ -1,0 +1,20 @@
+{
+  "nav.humanNow": "Human Ahora",
+  "nav.needsYou": "Te Necesitan",
+  "nav.chains": "Cadenas Humanas",
+  "nav.search": "Buscar",
+  "nav.askHuman": "Pide Ayuda",
+  "nav.signIn": "Iniciar sesión",
+  "nav.join": "Únete a HUMAN",
+  "nav.signOut": "Cerrar sesión",
+  "footer.tagline": "Encuentra a las personas que hacen que las cosas pasen. HUMAN se basa en Misiones — cosas reales, hechas con personas reales — no en feeds, likes o seguidores.",
+  "footer.safety": "Confianza y Seguridad",
+  "footer.about": "Acerca de",
+  "home.tag": "Human Ahora",
+  "home.title": "Encuentra a las personas que hacen que las cosas pasen",
+  "home.subtitle": "No es un feed de publicaciones — es un mapa en vivo de las Misiones que la gente está realizando ahora, y las personas que aún se necesitan.",
+  "auth.joinTitle": "Únete a HUMAN",
+  "auth.signInTitle": "Inicia sesión en HUMAN",
+  "auth.joinSubtitle": "Cada cuenta comienza con una identidad real — sin misiones anónimas.",
+  "auth.signInSubtitle": "Bienvenido de nuevo."
+}

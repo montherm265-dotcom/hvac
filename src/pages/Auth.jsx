@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
 import BackendNotice from '@/components/BackendNotice';
+import { useI18n } from '@/i18n';
 
 export default function Auth() {
   const [params] = useSearchParams();
@@ -15,6 +16,7 @@ export default function Auth() {
   const [submitting, setSubmitting] = useState(false);
 
   const { signIn, signUpWithProfile } = useAuth();
+  const { t } = useI18n();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
@@ -26,10 +28,11 @@ export default function Auth() {
     try {
       if (mode === 'signup') {
         await signUpWithProfile({ email, password, username, displayName });
+        navigate('/onboarding', { replace: true });
       } else {
         await signIn({ email, password });
+        navigate(from, { replace: true });
       }
-      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -41,10 +44,10 @@ export default function Auth() {
     <div className="section-pad">
       <div className="mx-auto max-w-sm">
         <h1 className="text-center font-display text-2xl font-bold">
-          {mode === 'signup' ? 'Join HUMAN' : 'Sign in to HUMAN'}
+          {mode === 'signup' ? t('auth.joinTitle') : t('auth.signInTitle')}
         </h1>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          {mode === 'signup' ? 'Every account starts with a real identity — no anonymous missions.' : 'Welcome back.'}
+          {mode === 'signup' ? t('auth.joinSubtitle') : t('auth.signInSubtitle')}
         </p>
 
         {!isSupabaseConfigured && <BackendNotice className="mt-6" />}

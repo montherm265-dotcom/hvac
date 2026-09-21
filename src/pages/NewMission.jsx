@@ -1,18 +1,28 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuth } from '@/context/AuthContext';
-
-const CATEGORIES = ['Community', 'Creative', 'Outdoors', 'Learning', 'Building', 'Sports', 'Volunteering'];
+import { track } from '@/lib/analytics';
 
 export default function NewMission() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const originRequestId = params.get('from_request');
+
+  const [categories, setCategories] = useState([]);
   const [form, setForm] = useState({
-    title: '', description: '', category: CATEGORIES[0], city: '', crewLimit: '', isPrivate: false,
+    title: '', description: '', categoryId: '', city: '', crewLimit: '', visibility: 'public',
   });
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    supabase.from('categories').select('id, label').in('kind', ['mission', 'both']).order('label').then(({ data }) => {
+      setCategories(data ?? []);
+      if (data?.length) setForm((f) => ({ ...f, categoryId: f.categoryId || data[0].id }));
+    });
+  }, []);
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -29,18 +39,18 @@ export default function NewMission() {
           creator_id: user.id,
           title: form.title,
           description: form.description,
-          category: form.category,
+          category_id: form.categoryId || null,
           city: form.city || null,
           crew_limit: form.crewLimit ? Number(form.crewLimit) : null,
-          is_private: form.isPrivate,
+          visibility: form.visibility,
+          origin_request_id: originRequestId || null,
         })
         .select()
         .single();
       if (insertError) throw insertError;
 
-      await supabase.from('mission_participants').insert({
-        mission_id: data.id, user_id: user.id, role: 'creator',
-      });
+      await supabase.from('mission_members').insert({ mission_id: data.id, user_id: user.id, role: 'creator' });
+      track('mission_created', { mission_id: data.id });
 
       navigate(`/missions/${data.id}`);
     } catch (err) {
@@ -53,9 +63,10 @@ export default function NewMission() {
   return (
     <div className="section-pad">
       <div className="mx-auto max-w-lg">
-        <h1 className="font-display text-2xl font-bold">Ask Human</h1>
+        <h1 className="font-display text-2xl font-bold">Start a Mission</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Describe the real thing you're trying to make happen. HUMAN will help you find the people who can help it happen.
+          A Mission is for sustained work with real crew, milestones, and progress — not a one-off ask.
+          For something lighter, try <a href="/ask" className="text-accent underline">Ask Human</a> instead.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
@@ -77,8 +88,8 @@ export default function NewMission() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="mb-1 block text-sm font-medium">Category</label>
-              <select className="input-soft" value={form.category} onChange={(e) => update('category', e.target.value)}>
-                {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              <select className="input-soft" value={form.categoryId} onChange={(e) => update('categoryId', e.target.value)}>
+                {categories.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
               </select>
             </div>
             <div>
@@ -86,17 +97,23 @@ export default function NewMission() {
               <input className="input-soft" value={form.city} onChange={(e) => update('city', e.target.value)} placeholder="Optional" />
             </div>
           </div>
-          <div>
-            <label className="mb-1 block text-sm font-medium">Crew limit</label>
-            <input
-              className="input-soft" type="number" min={1} value={form.crewLimit}
-              onChange={(e) => update('crewLimit', e.target.value)} placeholder="Optional — leave blank for unlimited"
-            />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="mb-1 block text-sm font-medium">Crew limit</label>
+              <input
+                className="input-soft" type="number" min={1} value={form.crewLimit}
+                onChange={(e) => update('crewLimit', e.target.value)} placeholder="Unlimited"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium">Visibility</label>
+              <select className="input-soft" value={form.visibility} onChange={(e) => update('visibility', e.target.value)}>
+                <option value="public">Public</option>
+                <option value="connections">Connections only</option>
+                <option value="private">Private (invite only)</option>
+              </select>
+            </div>
           </div>
-          <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={form.isPrivate} onChange={(e) => update('isPrivate', e.target.checked)} />
-            Private mission (only visible to crew)
-          </label>
 
           {error && <p className="text-sm text-danger">{error}</p>}
 

@@ -47,15 +47,21 @@ export function AuthProvider({ children }) {
         display_name: displayName,
       });
       if (profileError) throw profileError;
+      // Set synchronously rather than waiting on the onAuthStateChange listener:
+      // a caller that navigates to a RequireAuth route right after this resolves
+      // must not see a still-null session and get bounced back to /auth.
+      if (data.session) setSession(data.session);
       await loadProfile(userId);
     }
     return data;
   }, [loadProfile]);
 
   const signIn = useCallback(async ({ email, password }) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
-  }, []);
+    if (data.session) setSession(data.session);
+    await loadProfile(data.session?.user?.id);
+  }, [loadProfile]);
 
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();

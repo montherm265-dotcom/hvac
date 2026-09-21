@@ -1,0 +1,20 @@
+{
+  "nav.humanNow": "Human Now",
+  "nav.needsYou": "Needs You",
+  "nav.chains": "Human Chains",
+  "nav.search": "Search",
+  "nav.askHuman": "Ask Human",
+  "nav.signIn": "Sign in",
+  "nav.join": "Join HUMAN",
+  "nav.signOut": "Sign out",
+  "footer.tagline": "Find the humans who make life happen. HUMAN is built around Missions — real things, done with real people — not feeds, likes, or followers.",
+  "footer.safety": "Trust & Safety",
+  "footer.about": "About",
+  "home.tag": "Human Now",
+  "home.title": "Find the humans who make life happen",
+  "home.subtitle": "Not a feed of posts — a live map of Missions people are running right now, and the humans still needed to make them happen.",
+  "auth.joinTitle": "Join HUMAN",
+  "auth.signInTitle": "Sign in to HUMAN",
+  "auth.joinSubtitle": "Every account starts with a real identity — no anonymous missions.",
+  "auth.signInSubtitle": "Welcome back."
+}
